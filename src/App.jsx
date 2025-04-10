@@ -1,33 +1,54 @@
-import { useState } from 'react'
-import films from "./data/array"
-
-// const array = [
-//   { title: 'Inception', genre: 'Fantascienza' },
-//   { title: 'Il Padrino', genre: 'Thriller' },
-//   { title: 'Titanic', genre: 'Romantico' },
-//   { title: 'Batman', genre: 'Azione' },
-//   { title: 'Interstellar', genre: 'Fantascienza' },
-//   { title: 'Pulp Fiction', genre: 'Thriller' },
-// ]
+import { useEffect, useState } from 'react';
+import films from "./data/array";
 
 function App() {
-
-
   const [posts, setPosts] = useState(films);
-  //console.log(posts);
+  const [filteredPosts, setFilteredPosts] = useState(films);
+  const [searchGenre, setSearchGenre] = useState('');
+
+  useEffect(() => {
+    if (searchGenre === '') {
+      setFilteredPosts(posts);
+    } else {
+      const filtered = posts.filter(post => post.genre === searchGenre);
+      setFilteredPosts(filtered);
+    }
+  }, [searchGenre, posts]);
+
   return (
     <>
       <h1>Films</h1>
-      <ul>
-        {posts.map((element, index) =>
-          <li key={index}>{element.genre}</li>
-        )}
-      </ul>
+      <hr />
+      <section>
+        <h2>Find Article</h2>
+        <label>Find for genre</label>
+        <div>
+          <select value={searchGenre} onChange={event => setSearchGenre(event.target.value)}>
+            <option value="">------</option>
+            <option>Fantascienza</option>
+            <option>Thriller</option>
+            <option>Romantico</option>
+            <option>Azione</option>
+          </select>
+          {searchGenre}
+        </div>
+      </section>
+      <div>
+        <ul>
+          {filteredPosts.map((element, index) => (
+            <li key={index}>
+              <div>{element.genre}</div>
+              <div>{element.title}</div>
+              <hr />
+            </li>
+          ))}
+        </ul>
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
 
 
 // Esercizio
