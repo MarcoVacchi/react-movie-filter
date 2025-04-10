@@ -6,6 +6,17 @@ function App() {
   const [filteredPosts, setFilteredPosts] = useState(films);
   const [searchGenre, setSearchGenre] = useState('');
   const [searchTitle, setSearchTitle] = useState('');
+  const [newGenre, setNewGenre] = useState('');
+  const [newTitle, setNewTitle] = useState('');
+
+  const addNewGenre = e => {
+    e.preventDefault();
+    const film = { genre: newGenre, title: newTitle };
+    setPosts([...posts, film]);
+    setFilteredPosts([...posts, film]);
+    setNewTitle('');
+    setNewGenre('');
+  };
 
   useEffect(() => {
     let filtered = posts;
@@ -52,18 +63,22 @@ function App() {
         <ul>
           {filteredPosts.map((element, index) => (
             <li key={index}>
-              <div>{element.genre}</div>
               <div>{element.title}</div>
+              <div>{element.genre}</div>
               <hr />
             </li>
           ))}
         </ul>
       </div>
+      <form onSubmit={addNewGenre}>
+        <input placeholder="Titolo" value={newTitle} onChange={e => setNewTitle(e.target.value)} />
+        <input placeholder="Genere" value={newGenre} onChange={e => setNewGenre(e.target.value)} />
+        <button type="submit">Aggiungi</button>
+      </form>
     </>
   );
 }
 
 export default App;
 
-
-// 1. Aggiungere un campo di ricerca per filtrare i film anche per titolo.
+// 2. Creare un sistema per aggiungere nuovi film alla lista tramite un form.
