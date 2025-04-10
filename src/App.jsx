@@ -5,32 +5,47 @@ function App() {
   const [posts, setPosts] = useState(films);
   const [filteredPosts, setFilteredPosts] = useState(films);
   const [searchGenre, setSearchGenre] = useState('');
+  const [searchTitle, setSearchTitle] = useState('');
 
   useEffect(() => {
-    if (searchGenre === '') {
-      setFilteredPosts(posts);
-    } else {
-      const filtered = posts.filter(post => post.genre === searchGenre);
-      setFilteredPosts(filtered);
-    }
-  }, [searchGenre, posts]);
+    let filtered = posts;
 
+    if (searchGenre) {
+      filtered = filtered.filter(element => element.genre === searchGenre);
+    }
+
+    if (searchTitle) {
+      filtered = filtered.filter(element => element.title.toLowerCase().includes(searchTitle.toLowerCase()));
+    }
+
+    setFilteredPosts(filtered);
+  }, [searchGenre, searchTitle]);
   return (
     <>
       <h1>Films</h1>
       <hr />
       <section>
         <h2>Find Article</h2>
-        <label>Find for genre</label>
+        <label><strong>Find for genre</strong></label>
         <div>
-          <select value={searchGenre} onChange={event => setSearchGenre(event.target.value)}>
+          <select value={searchGenre}
+            onChange={event => setSearchGenre(event.target.value)}>
             <option value="">------</option>
             <option>Fantascienza</option>
             <option>Thriller</option>
             <option>Romantico</option>
             <option>Azione</option>
           </select>
-          {searchGenre}
+          <hr />
+          <label><strong>Find for title</strong></label>
+          <div>
+            <input
+              type="text"
+              value={searchTitle}
+              placeholder="search for title"
+              onChange={event => setSearchTitle(event.target.value)}
+            />
+          </div>
         </div>
       </section>
       <div>
@@ -51,6 +66,4 @@ function App() {
 export default App;
 
 
-// Esercizio
-// Create un nuovo progetto React e implementate un sistema di filtro per una lista di film in base al genere.
-// L'array dei film è già fornito:
+// 1. Aggiungere un campo di ricerca per filtrare i film anche per titolo.
